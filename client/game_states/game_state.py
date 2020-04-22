@@ -1,18 +1,30 @@
+import pygame
+
+
 class GameState:
 
     def __init__(self):
         self.done = False
         self.quit = False
         self.next_state_name = None
-        self.persist = None
+        self.persistent = None
+        self.surface_rect = pygame.display.get_surface().get_rect()
+
+        self.setupGraphics()
+
+    def setupGraphics(self):
+        """
+        Setup the graphics before drawing to the screen.
+        """
+        pass
 
     def startup(self, persistent):
         """
         Called when a state resumes being active.
         Allows information to be passed between states.
-        :param persistent: dict passed from previous state
+        ::param persistent: dict passed from previous state
         """
-        self.persist = persistent
+        self.persistent = persistent
 
     def process_event(self, event):
         """

@@ -28,7 +28,7 @@ class Game:
         Switch to the next game state.
         """
         current_state_name = self.current_state_name
-        next_state_name = self.state.next_state_name
+        next_state_name = self.current_state.next_state_name
         self.current_state.done = False
         self.current_state_name = next_state_name
         persistent = self.current_state.persistent
@@ -45,7 +45,7 @@ class Game:
     def update(self, dt):
         """
         Check for state flip and update the current state.
-        :param dt: milliseconds since last tick
+        ::param dt: milliseconds since last tick
         """
         if self.current_state.quit:
             self.done = True
