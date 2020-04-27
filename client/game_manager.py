@@ -1,7 +1,7 @@
 import pygame
 
 
-class Game:
+class GameManager:
     """
     An engine and game manager that manages each game state. When run, the
     current state is updated at a tick rate to process events, update the game

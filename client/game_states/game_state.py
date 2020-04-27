@@ -35,11 +35,13 @@ class GameState:
     def update(self, dt):
         """
         Update the game state.
+        ::param dt: milliseconds since last tick
         """
         pass
 
     def draw(self, surface):
         """
         Draw everything to the screen's surface.
+        ::param surface: display surface to draw on
         """
         pass

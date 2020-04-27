@@ -1,6 +1,6 @@
 import pygame
 
-from client.game import Game
+from client.game_manager import GameManager
 from client.game_states.main_menu_state import MainMenuState
 from client.game_states.singleplayer_state import SingleplayerState
 from client.game_states.offline_multiplayer_state import OfflineMultiplayerState
@@ -17,4 +17,4 @@ states = {'MainMenuState': MainMenuState(), 'SingleplayerState': SingleplayerSta
 start_state_name = 'MainMenuState'
 
 # Create the game
-game = Game(surface, states, start_state_name)
+game_manager = GameManager(surface, states, start_state_name)
