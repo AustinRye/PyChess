@@ -9,7 +9,10 @@ class ChessGame:
         self.board = Board()
 
     def reset(self):
-        pass
+        """
+        Reset the chess game.
+        """
+        self.board.reset()
 
     def draw(self, surface):
         """

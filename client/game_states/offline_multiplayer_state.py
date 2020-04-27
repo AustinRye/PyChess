@@ -19,6 +19,11 @@ class OfflineMultiplayerState(GameState):
         # Initialize colors
         self.white = (255, 255, 255)
 
+    def startup(self, persistent):
+        super().startup(persistent)
+
+        self.chess_game.reset()
+
     def process_event(self, event):
         """
         Called when a state resumes being active.
