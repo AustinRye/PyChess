@@ -12,12 +12,24 @@ class OfflineMultiplayerState(GameState):
 
         self.chess_game = ChessGame()
 
-    def setupGraphics(self):
+    def setupGraphics(self, surface):
         """
         Setup the graphics before drawing to the screen.
+        ::param surface: display surface to draw on
         """
+        surface_rect = surface.get_rect()
+
         # Initialize colors
         self.white = (255, 255, 255)
+
+        # Initialize board size
+        board_width = 560
+        board_height = 560
+        board_left = (surface_rect.width-board_width)/2
+        board_top = (surface_rect.height-board_height)/2
+        board_rect = pygame.Rect(
+            (board_left, board_top), (board_width, board_height))
+        self.chess_game.board.set_rect(board_rect)
 
     def startup(self, persistent):
         super().startup(persistent)
@@ -32,6 +44,9 @@ class OfflineMultiplayerState(GameState):
         """
         if event.type == pygame.QUIT:
             self.quit = True
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_pos = pygame.mouse.get_pos()
+            self.chess_game.handle_mouse_down(mouse_pos)
 
     def update(self, dt):
         """

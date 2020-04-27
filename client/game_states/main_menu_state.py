@@ -6,9 +6,10 @@ from client.game_states.game_state import GameState
 
 class MainMenuState(GameState):
 
-    def setupGraphics(self):
+    def setupGraphics(self, surface):
         """
         Setup the graphics before drawing to the screen.
+        ::param surface: display surface to draw on
         """
         # Initialize font
         self.font = pygame.font.Font(None, 24)

@@ -14,6 +14,13 @@ class ChessGame:
         """
         self.board.reset()
 
+    def handle_mouse_down(self, mouse_pos):
+        """
+        Handle mouse down event.
+        ::param mouse_pos: mouse position
+        """
+        print(self.board.is_within_bounds(mouse_pos[0], mouse_pos[1]))
+
     def draw(self, surface):
         """
         Draw the chess game to the screen's surface.
@@ -22,10 +29,4 @@ class ChessGame:
         surface_rect = surface.get_rect()
 
         # Draw the board
-        board_width = 560
-        board_height = 560
-        board_left = (surface_rect.width-board_width)/2
-        board_top = (surface_rect.height-board_height)/2
-        board_rect = pygame.Rect(
-            (board_left, board_top), (board_width, board_height))
-        self.board.draw(surface, board_rect)
+        self.board.draw(surface)

@@ -6,9 +6,10 @@ from client.game_states.game_state import GameState
 
 class SingleplayerState(GameState):
 
-    def setupGraphics(self):
+    def setupGraphics(self, surface):
         """
         Setup the graphics before drawing to the screen.
+        ::param surface: display surface to draw on
         """
         # Initialize colors
         self.white = (255, 255, 255)

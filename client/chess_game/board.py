@@ -13,6 +13,24 @@ class Board:
         self.squares = [[Square() for _ in range(self.colCount)]
                         for _ in range(self.rowCount)]
 
+        self.rect = None
+
+    def set_rect(self, board_rect):
+        """
+        Set the board size.
+        ::param board_rect: the board size
+        """
+        self.board_rect = board_rect
+
+    def is_within_bounds(self, x, y):
+        """
+        Check if position is within the board bounds.
+        ::param x: x position
+        ::param y: y position
+        ::return bool: True if position within board bounds, else False
+        """
+        return (self.board_rect.left < x < self.board_rect.right and self.board_rect.top < y < self.board_rect.bottom)
+
     def reset(self):
         """
         Reset the board.
@@ -51,17 +69,16 @@ class Board:
         self.squares[6][6].add_piece(Pawn(Color.WHITE))
         self.squares[6][7].add_piece(Pawn(Color.WHITE))
 
-    def draw(self, surface, board_rect):
+    def draw(self, surface):
         """
         Draw the board to the screen's surface.
         ::param surface: display surface to draw on
-        ::param board_rect: the board rect size
         """
         lightBrown = (217, 179, 140)
         darkBrown = (191, 128, 64)
 
-        square_width = board_rect.width//self.rowCount
-        square_height = board_rect.height//self.colCount
+        square_width = self.board_rect.width//self.rowCount
+        square_height = self.board_rect.height//self.colCount
 
         piece_width = square_width - 10
         piece_height = square_height - 10
@@ -75,13 +92,13 @@ class Board:
                 # Draw the square
                 square_color = lightBrown if (row+col) % 2 == 0 else darkBrown
                 square_rect = pygame.Rect(
-                    (board_rect.left+square_width*col, board_rect.top+square_width*row), (square_width, square_height))
+                    (self.board_rect.left+square_width*col, self.board_rect.top+square_width*row), (square_width, square_height))
                 pygame.draw.rect(surface, square_color, square_rect)
 
                 # Draw the square's piece if occupied
                 if square.is_occupied():
                     image = pygame.transform.scale(
                         square.get_piece().get_image(), (piece_width, piece_height))
-                    image_rect = ((board_rect.left+col*square_width+(square_width-piece_width)/2, board_rect.top +
+                    image_rect = ((self.board_rect.left+col*square_width+(square_width-piece_width)/2, self.board_rect.top +
                                    row*square_height+(square_height-piece_height)/2), (piece_width, piece_height))
                     surface.blit(image, image_rect)

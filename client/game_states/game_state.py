@@ -10,11 +10,10 @@ class GameState:
         self.persistent = None
         self.surface_rect = pygame.display.get_surface().get_rect()
 
-        self.setupGraphics()
-
-    def setupGraphics(self):
+    def setupGraphics(self, surface):
         """
         Setup the graphics before drawing to the screen.
+        ::param surface: display surface to draw on
         """
         pass
 

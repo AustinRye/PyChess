@@ -22,6 +22,7 @@ class GameManager:
         self.states = states
         self.current_state_name = start_state_name
         self.current_state = self.states[self.current_state_name]
+        self.current_state.setupGraphics(self.surface)
 
     def flip_state(self):
         """
@@ -33,6 +34,7 @@ class GameManager:
         self.current_state_name = next_state_name
         persistent = self.current_state.persistent
         self.current_state = self.states[self.current_state_name]
+        self.current_state.setupGraphics(self.surface)
         self.current_state.startup(persistent)
 
     def process_events(self):
