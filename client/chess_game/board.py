@@ -15,12 +15,28 @@ class Board:
 
         self.rect = None
 
-    def set_rect(self, board_rect):
+    def set_size(self, board_rect):
         """
         Set the board size.
         ::param board_rect: the board size
         """
         self.board_rect = board_rect
+
+        self.square_width = self.board_rect.width//self.rowCount
+        self.square_height = self.board_rect.height//self.colCount
+
+        self.piece_width = self.square_width - 10
+        self.piece_height = self.square_height - 10
+
+    def get_square(self, x, y):
+        """
+        Get the square at the specified position.
+        ::param x: x position
+        ::param y: y position
+        """
+        row = (y-self.board_rect.top)//self.square_height
+        col = (x-self.board_rect.left)//self.square_width
+        return self.squares[row][col]
 
     def is_within_bounds(self, x, y):
         """
@@ -77,12 +93,6 @@ class Board:
         lightBrown = (217, 179, 140)
         darkBrown = (191, 128, 64)
 
-        square_width = self.board_rect.width//self.rowCount
-        square_height = self.board_rect.height//self.colCount
-
-        piece_width = square_width - 10
-        piece_height = square_height - 10
-
         # Draw each square
         for row in range(self.rowCount):
             for col in range(self.colCount):
@@ -92,13 +102,13 @@ class Board:
                 # Draw the square
                 square_color = lightBrown if (row+col) % 2 == 0 else darkBrown
                 square_rect = pygame.Rect(
-                    (self.board_rect.left+square_width*col, self.board_rect.top+square_width*row), (square_width, square_height))
+                    (self.board_rect.left+self.square_width*col, self.board_rect.top+self.square_width*row), (self.square_width, self.square_height))
                 pygame.draw.rect(surface, square_color, square_rect)
 
                 # Draw the square's piece if occupied
                 if square.is_occupied():
                     image = pygame.transform.scale(
-                        square.get_piece().get_image(), (piece_width, piece_height))
-                    image_rect = ((self.board_rect.left+col*square_width+(square_width-piece_width)/2, self.board_rect.top +
-                                   row*square_height+(square_height-piece_height)/2), (piece_width, piece_height))
+                        square.get_piece().get_image(), (self.piece_width, self.piece_height))
+                    image_rect = ((self.board_rect.left+col*self.square_width+(self.square_width-self.piece_width)/2, self.board_rect.top +
+                                   row*self.square_height+(self.square_height-self.piece_height)/2), (self.piece_width, self.piece_height))
                     surface.blit(image, image_rect)

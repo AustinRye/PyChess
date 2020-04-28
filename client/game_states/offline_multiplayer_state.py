@@ -29,7 +29,7 @@ class OfflineMultiplayerState(GameState):
         board_top = (surface_rect.height-board_height)/2
         board_rect = pygame.Rect(
             (board_left, board_top), (board_width, board_height))
-        self.chess_game.board.set_rect(board_rect)
+        self.chess_game.board.set_size(board_rect)
 
     def startup(self, persistent):
         super().startup(persistent)
@@ -46,7 +46,10 @@ class OfflineMultiplayerState(GameState):
             self.quit = True
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = pygame.mouse.get_pos()
-            self.chess_game.handle_mouse_down(mouse_pos)
+            self.chess_game.handle_mouse_down(mouse_pos[0], mouse_pos[1])
+        elif event.type == pygame.MOUSEBUTTONUP:
+            mouse_pos = pygame.mouse.get_pos()
+            self.chess_game.handle_mouse_up(mouse_pos[0], mouse_pos[1])
 
     def update(self, dt):
         """
