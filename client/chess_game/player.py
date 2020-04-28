@@ -9,6 +9,20 @@ class Player:
         self.previous_square = None
         self.selected_piece = None
 
+    def get_color(self):
+        """
+        Get the player color.
+        ::return Color: player color
+        """
+        return self.color
+
+    def get_previous_square(self):
+        """
+        Get the previous square.
+        ::return Square: previous square
+        """
+        return self.previous_square
+
     def get_selected_piece(self):
         """
         Get the selected piece.
@@ -46,7 +60,7 @@ class Player:
         """
         Place the piece back to its previous square.
         """
-        self.previous_square.addPiece(self.selected_piece)
+        self.previous_square.add_piece(self.selected_piece)
         self.previous_square = None
         self.selected_piece = None
 

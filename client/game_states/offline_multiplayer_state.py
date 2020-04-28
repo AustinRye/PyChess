@@ -42,14 +42,18 @@ class OfflineMultiplayerState(GameState):
         Allows information to be passed between states.
         ::param persistent: dict passed from previous state
         """
+        LEFT_CLICK = 1
+
         if event.type == pygame.QUIT:
             self.quit = True
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            mouse_pos = pygame.mouse.get_pos()
-            self.chess_game.handle_mouse_down(mouse_pos[0], mouse_pos[1])
+            if event.button == LEFT_CLICK:
+                mouse_pos = pygame.mouse.get_pos()
+                self.chess_game.handle_mouse_down(mouse_pos[0], mouse_pos[1])
         elif event.type == pygame.MOUSEBUTTONUP:
-            mouse_pos = pygame.mouse.get_pos()
-            self.chess_game.handle_mouse_up(mouse_pos[0], mouse_pos[1])
+            if event.button == LEFT_CLICK:
+                mouse_pos = pygame.mouse.get_pos()
+                self.chess_game.handle_mouse_up(mouse_pos[0], mouse_pos[1])
 
     def update(self, dt):
         """

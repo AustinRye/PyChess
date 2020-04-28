@@ -27,6 +27,13 @@ class Piece:
         self.color = color
         self.image = None
 
+    def get_color(self):
+        """
+        Get the piece color.
+        ::return Color: piece color
+        """
+        return self.color
+
     def get_image(self):
         """
         Get the piece image.
