@@ -10,23 +10,10 @@ class Board:
         self.rowCount = 8
         self.colCount = 8
 
+        self.board_rect = None
+
         self.squares = [[Square() for _ in range(self.colCount)]
                         for _ in range(self.rowCount)]
-
-        self.rect = None
-
-    def set_size(self, board_rect):
-        """
-        Set the board size.
-        ::param board_rect: the board size
-        """
-        self.board_rect = board_rect
-
-        self.square_width = self.board_rect.width//self.rowCount
-        self.square_height = self.board_rect.height//self.colCount
-
-        self.piece_width = self.square_width - 10
-        self.piece_height = self.square_height - 10
 
     def get_square(self, x, y):
         """
@@ -34,23 +21,24 @@ class Board:
         ::param x: x position
         ::param y: y position
         """
-        row = (y-self.board_rect.top)//self.square_height
-        col = (x-self.board_rect.left)//self.square_width
-        return self.squares[row][col]
+        for row in range(self.rowCount):
+            for col in range(self.colCount):
+                if self.squares[row][col].is_within_bounds(x, y):
+                    return self.squares[row][col]
 
-    def is_within_bounds(self, x, y):
-        """
-        Check if position is within the board bounds.
-        ::param x: x position
-        ::param y: y position
-        ::return bool: True if position within board bounds, else False
-        """
-        return (self.board_rect.left < x < self.board_rect.right and self.board_rect.top < y < self.board_rect.bottom)
+        return None
 
     def reset(self):
         """
         Reset the board.
         """
+        # Remove pieces
+        for row in range(self.rowCount):
+            for col in range(self.colCount):
+                if self.squares[row][col].is_occupied():
+                    self.squares[row][col].remove_piece()
+
+        # Add pieces
         self.squares[0][0].add_piece(Rook(Color.BLACK))
         self.squares[0][1].add_piece(Knight(Color.BLACK))
         self.squares[0][2].add_piece(Bishop(Color.BLACK))
@@ -85,6 +73,38 @@ class Board:
         self.squares[6][6].add_piece(Pawn(Color.WHITE))
         self.squares[6][7].add_piece(Pawn(Color.WHITE))
 
+    def set_rect(self, board_rect):
+        """
+        Set the board rect.
+        ::param board_rect: the board rect
+        """
+        self.board_rect = board_rect
+
+        self.set_square_rect(self.board_rect)
+
+    def set_square_rect(self, board_rect):
+        """
+        Set the square rect relative to board rect.
+        ::param board_rect: the board rect
+        """
+        square_width = board_rect.width//self.rowCount
+        square_height = board_rect.height//self.colCount
+
+        for row in range(self.rowCount):
+            for col in range(self.colCount):
+                square_rect = pygame.Rect((board_rect.left+square_width*col,
+                                           board_rect.top+square_width*row), (square_width, square_height))
+                self.squares[row][col].set_rect(square_rect)
+
+    def is_within_bounds(self, x, y):
+        """
+        Check if position is within the board bounds.
+        ::param x: x position
+        ::param y: y position
+        ::return bool: True if position within board bounds, else False
+        """
+        return (self.board_rect.left < x < self.board_rect.right and self.board_rect.top < y < self.board_rect.bottom)
+
     def draw(self, surface):
         """
         Draw the board to the screen's surface.
@@ -97,18 +117,8 @@ class Board:
         for row in range(self.rowCount):
             for col in range(self.colCount):
 
-                square = self.squares[row][col]
+                # Get the square's color
+                square_color = lightBrown if (row+col) % 2 == 0 else darkBrown
 
                 # Draw the square
-                square_color = lightBrown if (row+col) % 2 == 0 else darkBrown
-                square_rect = pygame.Rect(
-                    (self.board_rect.left+self.square_width*col, self.board_rect.top+self.square_width*row), (self.square_width, self.square_height))
-                pygame.draw.rect(surface, square_color, square_rect)
-
-                # Draw the square's piece if occupied
-                if square.is_occupied():
-                    image = pygame.transform.scale(
-                        square.get_piece().get_image(), (self.piece_width, self.piece_height))
-                    image_rect = ((self.board_rect.left+col*self.square_width+(self.square_width-self.piece_width)/2, self.board_rect.top +
-                                   row*self.square_height+(self.square_height-self.piece_height)/2), (self.piece_width, self.piece_height))
-                    surface.blit(image, image_rect)
+                self.squares[row][col].draw(surface, square_color)

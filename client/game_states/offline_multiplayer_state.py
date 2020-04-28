@@ -29,7 +29,7 @@ class OfflineMultiplayerState(GameState):
         board_top = (surface_rect.height-board_height)/2
         board_rect = pygame.Rect(
             (board_left, board_top), (board_width, board_height))
-        self.chess_game.board.set_size(board_rect)
+        self.chess_game.board.set_rect(board_rect)
 
     def startup(self, persistent):
         super().startup(persistent)

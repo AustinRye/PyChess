@@ -35,6 +35,7 @@ class Player:
         Select piece.
         ::param piece: selected square
         """
+        print('pick piece')
         self.previous_square = square
         self.selected_piece = square.remove_piece()
 
@@ -42,6 +43,7 @@ class Player:
         """
         Place the piece on the square.
         """
+        print('place piece')
         self.previous_square = None
         square.add_piece(self.selected_piece)
         self.selected_piece = None
@@ -51,6 +53,7 @@ class Player:
         Replace the piece on the square.
         ::return Square: square to replace the piece
         """
+        print('replace piece')
         self.previous_square = None
         previous_piece = square.replace_piece(self.selected_piece)
         self.selected_piece = None
@@ -60,25 +63,35 @@ class Player:
         """
         Place the piece back to its previous square.
         """
+        print('cancel piece')
         self.previous_square.add_piece(self.selected_piece)
         self.previous_square = None
         self.selected_piece = None
 
-    def drawSelectedPiece(self, surface, board_piece_width, board_piece_height):
+    def draw_selected_piece(self, surface):
         """
         Draw the selected piece at the player's mouse position.
         ::param surface: display surface to draw on
-        ::param board_piece_width: the board's piece width
-        ::param board_piece_height: the board's piece height
         """
-        if self.selected_piece:
-            selected_piece_width = board_piece_width + 20
-            selected_piece_height = board_piece_height + 20
+        if self.selected_piece:  # Player has a selected piece
 
+            # Get mouse position
             mouse_pos = pygame.mouse.get_pos()
 
-            image = pygame.transform.scale(
-                self.selected_piece.get_image(), (selected_piece_width, selected_piece_height))
-            image_rect = ((mouse_pos[0]-selected_piece_width/2, mouse_pos[1] -
-                           selected_piece_height/2), (selected_piece_width, selected_piece_height))
-            surface.blit(image, image_rect)
+            # Get the previous square width and height
+            square_width = self.previous_square.get_rect().width
+            square_height = self.previous_square.get_rect().height
+
+            # Expand piece rect
+            piece_width_expanded = square_width + 10
+            piece_height_expanded = square_height + 10
+            piece_left_expanded = mouse_pos[0] - piece_width_expanded//2
+            piece_top_expanded = mouse_pos[1] - piece_height_expanded//2
+            piece_rect_expanded = pygame.Rect(
+                (piece_left_expanded, piece_top_expanded), (piece_width_expanded, piece_height_expanded))
+
+            # Set the piece's rect
+            self.selected_piece.set_rect(piece_rect_expanded)
+
+            # Draw the piece
+            self.selected_piece.draw(surface)

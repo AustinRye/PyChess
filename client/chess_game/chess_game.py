@@ -80,7 +80,5 @@ class ChessGame:
         self.board.draw(surface)
 
         # Draw the player's selected piece
-        self.player_white.drawSelectedPiece(
-            surface, self.board.piece_width, self.board.piece_height)
-        self.player_black.drawSelectedPiece(
-            surface, self.board.piece_width, self.board.piece_height)
+        self.player_white.draw_selected_piece(surface)
+        self.player_black.draw_selected_piece(surface)

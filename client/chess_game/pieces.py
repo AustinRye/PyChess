@@ -26,6 +26,7 @@ class Piece:
     def __init__(self, color):
         self.color = color
         self.image = None
+        self.piece_rect = None
 
     def get_color(self):
         """
@@ -34,12 +35,31 @@ class Piece:
         """
         return self.color
 
-    def get_image(self):
+    def get_rect(self):
         """
-        Get the piece image.
-        ::return pygame.Image: piece image
+        Get the piece rect.
+        ::return pygame.Rect: the piece rect
         """
-        return self.image
+        return self.piece_rect
+
+    def set_rect(self, piece_rect):
+        """
+        Set the piece rect.
+        ::param piece_rect: the piece rect
+        """
+        self.piece_rect = piece_rect
+
+    def draw(self, surface):
+        """
+        Draw the piece to the screen's surface.
+        ::param surface: display surface to draw on
+        """
+        # Scale the piece's image
+        image_scaled = pygame.transform.scale(
+            self.image, (self.piece_rect.width, self.piece_rect.height))
+
+        # Draw the piece's image
+        surface.blit(image_scaled, self.piece_rect)
 
 
 class King(Piece):
