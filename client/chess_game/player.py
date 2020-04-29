@@ -1,6 +1,8 @@
 import pygame
 from enum import Enum
 
+from client.chess_game.pieces import King
+
 
 class Player:
 
@@ -38,10 +40,6 @@ class Player:
         self.previous_square = square
         self.selected_piece = square.remove_piece()
 
-    def is_legal_move(self):
-        if (2, 2) in self.legal_moves:
-            print('yes')
-
     def place_piece(self, square):
         """
         Place the piece on the square.
@@ -67,6 +65,55 @@ class Player:
         self.previous_square.add_piece(self.selected_piece)
         self.previous_square = None
         self.selected_piece = None
+
+    def is_danger_move(self, row_count, col_count, squares, src):
+        """
+        Check if square is a danger move.
+        ::param row_count: the row count
+        ::param col_count: the col count
+        ::param squares: the board squares
+        """
+        # Mark as danger move if the square corresponds to a piece's valid move
+        for row in range(row_count):
+            for col in range(col_count):
+                square = squares[row][col]
+                if square.is_occupied():
+                    piece = square.get_piece()
+                    if not piece.get_color() == self.color:
+                        valid_moves = piece.get_valid_moves(
+                            row_count, col_count, squares, square)
+                        if src in valid_moves:
+                            return True
+
+        return False
+
+    def is_check_mate(self, row_count, col_count, squares):
+        """
+        Check if king is in the check mate position.
+        ::param row_count: the row count
+        ::param col_count: the col count
+        ::param squares: the board squares
+        """
+        # Get king of same color
+        for row in range(row_count):
+            for col in range(col_count):
+                piece = squares[row][col].get_piece()
+                if isinstance(piece, King):
+                    if piece.get_color() == self.color:
+                        king_square = squares[row][col]
+                        king = piece
+
+        king_valid_moves = king.get_valid_moves(
+            row_count, col_count, squares, king_square)
+        king_valid_moves.append(king_square)
+
+        danger_moves = []
+
+        for king_valid_move in king_valid_moves:
+            if self.is_danger_move(row_count, col_count, squares, king_valid_move):
+                danger_moves.append(king_valid_move)
+
+        return (king_valid_moves == danger_moves)
 
     def draw_selected_piece(self, surface):
         """

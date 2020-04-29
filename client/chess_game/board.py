@@ -105,7 +105,7 @@ class Board:
         """
         return (self.board_rect.left < x < self.board_rect.right and self.board_rect.top < y < self.board_rect.bottom)
 
-    def draw(self, surface, legal_moves):
+    def draw(self, surface, valid_moves):
         """
         Draw the board to the screen's surface.
         ::param surface: display surface to draw on
@@ -122,7 +122,7 @@ class Board:
                 square = self.squares[row][col]
 
                 # Get the square's color
-                if square in legal_moves:
+                if square in valid_moves:
                     square_color = green
                 else:
                     square_color = lightBrown if (
