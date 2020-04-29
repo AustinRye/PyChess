@@ -76,27 +76,6 @@ class Player:
         self.previous_square = None
         self.selected_piece = None
 
-    def is_danger_move(self, row_count, col_count, squares, src):
-        """
-        Check if square is a danger move.
-        ::param row_count: the row count
-        ::param col_count: the col count
-        ::param squares: the board squares
-        """
-        # Mark as danger move if the square corresponds to a piece's valid move
-        for row in range(row_count):
-            for col in range(col_count):
-                square = squares[row][col]
-                if square.is_occupied():
-                    piece = square.get_piece()
-                    if not piece.get_color() == self.color:
-                        valid_moves = piece.get_valid_moves(
-                            row_count, col_count, squares, square)
-                        if src in valid_moves:
-                            return True
-
-        return False
-
     def is_check_mate(self, row_count, col_count, squares):
         """
         Check if king is in the check mate position.
@@ -120,7 +99,7 @@ class Player:
         danger_moves = []
 
         for king_valid_move in king_valid_moves:
-            if self.is_danger_move(row_count, col_count, squares, king_valid_move):
+            if king.is_danger_move(row_count, col_count, squares, king_valid_move):
                 danger_moves.append(king_valid_move)
 
         return (king_valid_moves == danger_moves)

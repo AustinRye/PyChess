@@ -11,14 +11,11 @@ class MainMenuState(GameState):
         Setup the graphics before drawing to the screen.
         ::param surface: display surface to draw on
         """
-        # Initialize font
-        self.font = pygame.font.Font(None, 24)
+        # Initialize GUI manager
+        self.gui_manager = pygame_gui.UIManager(self.surface_rect.size)
 
         # Initialize colors
         self.white = (255, 255, 255)
-
-        # Initialize GUI manager
-        self.gui_manager = pygame_gui.UIManager(self.surface_rect.size)
 
         # Initialize pychess label
         width = 120

@@ -81,6 +81,27 @@ class King(Piece):
         else:
             self.image = black_king
 
+    def is_danger_move(self, row_count, col_count, squares, src_square):
+        """
+        Check if square is a danger move.
+        ::param row_count: the row count
+        ::param col_count: the col count
+        ::param squares: the board squares
+        """
+        # Mark as danger move if the square corresponds to a piece's valid move
+        for row in range(row_count):
+            for col in range(col_count):
+                square = squares[row][col]
+                if square.is_occupied():
+                    piece = square.get_piece()
+                    if not piece.get_color() == self.color:
+                        valid_moves = piece.get_valid_moves(
+                            row_count, col_count, squares, square)
+                        if src_square in valid_moves:
+                            return True
+
+        return False
+
     def get_valid_moves(self, row_count, col_count, squares, src_square):
         """
         Get a list of valid moves.

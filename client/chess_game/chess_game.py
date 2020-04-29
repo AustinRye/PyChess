@@ -71,6 +71,7 @@ class ChessGame:
                                 # Replace the piece at the selected square
                                 replaced_piece = self.player_turn.replace_piece(
                                     square)
+                                self.next_turn()
                                 # Check if king is checked
                                 if isinstance(replaced_piece, King):
                                     self.win = self.player_turn
@@ -80,10 +81,9 @@ class ChessGame:
                                     if isinstance(square.get_piece(), Pawn):
                                         if square.get_piece().first_move == True:
                                             square.get_piece().first_move = False
-                                    self.next_turn()
-                                    if self.player_turn.is_check_mate(self.board.row_count, self.board.col_count, self.board.squares):
-                                        self.win = self.player_turn
-                                        print('check mate')
+                                    # if self.player_turn.is_check_mate(self.board.row_count, self.board.col_count, self.board.squares):
+                                    #     self.win = self.player_turn
+                                    #     print('check mate')
                             else:  # Player and piece color are the same
                                 self.player_turn.cancel_selected_piece()
                         else:
@@ -91,14 +91,14 @@ class ChessGame:
                             if not self.player_turn.get_previous_square() == square:
                                 # Place the piece at the selected square
                                 self.player_turn.place_piece(square)
+                                self.next_turn()
                                 # If pawn, set first move to False
                                 if isinstance(square.get_piece(), Pawn):
                                     if square.get_piece().first_move == True:
                                         square.get_piece().first_move = False
-                                self.next_turn()
-                                if self.player_turn.is_check_mate(self.board.row_count, self.board.col_count, self.board.squares):
-                                    self.win = self.player_turn
-                                    print('check mate')
+                                # if self.player_turn.is_check_mate(self.board.row_count, self.board.col_count, self.board.squares):
+                                #     self.win = self.player_turn
+                                #     print('check mate')
                             else:  # Square is the same as the previous square
                                 self.player_turn.cancel_selected_piece()
                     else:  # Move is not valid
