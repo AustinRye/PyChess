@@ -119,7 +119,10 @@ class ChessGame:
         ::param surface: display surface to draw on
         """
         # Draw the board
-        self.board.draw(surface, self.valid_moves)
+        opposing_player = self.player_white if self.player_turn.get_color(
+        ) == Color.BLACK else self.player_black
+        self.board.draw(surface, self.valid_moves,
+                        opposing_player.get_previous_move())
 
         # Draw the player's selected piece
         if self.player_turn.get_selected_piece():

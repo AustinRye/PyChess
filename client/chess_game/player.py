@@ -10,6 +10,7 @@ class Player:
         self.color = color
         self.previous_square = None
         self.selected_piece = None
+        self.previous_move = None
 
     def get_color(self):
         """
@@ -32,6 +33,13 @@ class Player:
         """
         return self.selected_piece
 
+    def get_previous_move(self):
+        """
+        Get the previous move.
+        ::return tuple: previous move
+        """
+        return self.previous_move
+
     def pick_piece(self, square):
         """
         Select piece.
@@ -44,6 +52,7 @@ class Player:
         """
         Place the piece on the square.
         """
+        self.previous_move = (self.previous_square, square)
         self.previous_square = None
         square.add_piece(self.selected_piece)
         self.selected_piece = None
@@ -53,6 +62,7 @@ class Player:
         Replace the piece on the square.
         ::return Square: square to replace the piece
         """
+        self.previous_move = (self.previous_square, square)
         self.previous_square = None
         previous_piece = square.replace_piece(self.selected_piece)
         self.selected_piece = None

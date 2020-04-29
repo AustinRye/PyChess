@@ -105,14 +105,17 @@ class Board:
         """
         return (self.board_rect.left < x < self.board_rect.right and self.board_rect.top < y < self.board_rect.bottom)
 
-    def draw(self, surface, valid_moves):
+    def draw(self, surface, valid_moves, previous_move):
         """
         Draw the board to the screen's surface.
         ::param surface: display surface to draw on
+        ::param valid_moves: player valid moves
+        ::param previous_move: opposing player previous move
         """
         lightBrown = (217, 179, 140)
         darkBrown = (191, 128, 64)
         green = (0, 255, 0)
+        red = (255, 0, 0)
 
         # Draw each square
         for row in range(self.row_count):
@@ -124,6 +127,8 @@ class Board:
                 # Get the square's color
                 if square in valid_moves:
                     square_color = green
+                elif previous_move and square in previous_move:
+                    square_color = red
                 else:
                     square_color = lightBrown if (
                         row+col) % 2 == 0 else darkBrown
