@@ -35,6 +35,13 @@ class Piece:
         """
         return self.color
 
+    def get_legal_moves(self, rowCount, colCount, squares, src):
+        """
+        Get a list of legal moves.
+        ::return list: list with row and col tuples
+        """
+        pass
+
     def get_rect(self):
         """
         Get the piece rect.
@@ -74,6 +81,90 @@ class King(Piece):
         else:
             self.image = black_king
 
+    def get_legal_moves(self, row_count, col_count, squares, src_square):
+        """
+        Get a list of legal moves.
+        ::return list: list of squares
+        """
+        legal_moves = []
+
+        src_row = src_square.get_row()
+        src_col = src_square.get_col()
+
+        # Move down
+        if (0 <= src_row+1 <= row_count-1):
+            dest_square = squares[src_row+1][src_col]
+            if not dest_square.is_occupied():
+                legal_moves.append(dest_square)
+            else:
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+
+        # Move up
+        if (0 <= src_row-1 <= row_count-1):
+            dest_square = squares[src_row-1][src_col]
+            if not dest_square.is_occupied():
+                legal_moves.append(dest_square)
+            else:
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+
+        # Move right
+        if (0 <= src_col+1 <= col_count-1):
+            dest_square = squares[src_row][src_col+1]
+            if not dest_square.is_occupied():
+                legal_moves.append(dest_square)
+            else:
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+
+        # Move left
+        if (0 <= src_col-1 <= col_count-1):
+            dest_square = squares[src_row][src_col-1]
+            if not dest_square.is_occupied():
+                legal_moves.append(dest_square)
+            else:
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+
+        # Move down right
+        if (0 <= src_row+1 <= row_count-1 and 0 <= src_col+1 <= col_count-1):
+            dest_square = squares[src_row+1][src_col+1]
+            if not dest_square.is_occupied():
+                legal_moves.append(dest_square)
+            else:
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+
+        # Move down left
+        if (0 <= src_row+1 <= row_count-1 and 0 <= src_col-1 <= col_count-1):
+            dest_square = squares[src_row+1][src_col-1]
+            if not dest_square.is_occupied():
+                legal_moves.append(dest_square)
+            else:
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+
+        # Move up right
+        if (0 <= src_row-1 <= row_count-1 and 0 <= src_col+1 <= col_count-1):
+            dest_square = squares[src_row-1][src_col+1]
+            if not dest_square.is_occupied():
+                legal_moves.append(dest_square)
+            else:
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+
+        # Move up left
+        if (0 <= src_row-1 <= row_count-1 and 0 <= src_col-1 <= col_count-1):
+            dest_square = squares[src_row-1][src_col-1]
+            if not dest_square.is_occupied():
+                legal_moves.append(dest_square)
+            else:
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+
+        return legal_moves
+
 
 class Queen(Piece):
 
@@ -86,6 +177,111 @@ class Queen(Piece):
             self.image = white_queen
         else:
             self.image = black_queen
+
+    def get_legal_moves(self, row_count, col_count, squares, src_square):
+        """
+        Get a list of legal moves.
+        ::return list: list of squares
+        """
+        legal_moves = []
+
+        src_row = src_square.get_row()
+        src_col = src_square.get_col()
+
+        # Move horizontally right
+        for dx in range(1, col_count-src_col):
+            dest_square = squares[src_row][src_col+dx]
+            if not dest_square.is_occupied():
+                legal_moves.append(dest_square)
+            else:
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+                break
+
+        # Move horizontally left
+        for dx in range(1, src_col+1):
+            dest_square = squares[src_row][src_col-dx]
+            if not dest_square.is_occupied():
+                legal_moves.append(dest_square)
+            else:
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+                break
+
+        # Move vertically down
+        for dy in range(1, row_count-src_row):
+            dest_square = squares[src_row+dy][src_col]
+            if not dest_square.is_occupied():
+                legal_moves.append(dest_square)
+            else:
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+                break
+
+        # Move vertically up
+        for dy in range(1, src_row+1):
+            dest_square = squares[src_row-dy][src_col]
+            if not dest_square.is_occupied():
+                legal_moves.append(dest_square)
+            else:
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+                break
+
+        # Move diagonally down right
+        dx = col_count-1 - src_col
+        dy = row_count-1 - src_row
+        dmin = dx if dx <= dy else dy
+        for step in range(0, dmin):
+            print(step)
+            dest_square = squares[src_row+step+1][src_col+step+1]
+            if not dest_square.is_occupied():
+                legal_moves.append(dest_square)
+            else:
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+                break
+
+        # Move diagonally down left
+        dx = src_col
+        dy = row_count-1 - src_row
+        dmin = dx if dx <= dy else dy
+        for step in range(0, dmin):
+            dest_square = squares[src_row+step+1][src_col-step-1]
+            if not dest_square.is_occupied():
+                legal_moves.append(dest_square)
+            else:
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+                break
+
+        # Move diagonally up right
+        dx = col_count-1 - src_col
+        dy = src_row
+        dmin = dx if dx <= dy else dy
+        for step in range(0, dmin):
+            dest_square = squares[src_row-step-1][src_col+step+1]
+            if not dest_square.is_occupied():
+                legal_moves.append(dest_square)
+            else:
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+                break
+
+        # Move diagonally up left
+        dx = src_col
+        dy = src_row
+        dmin = dx if dx <= dy else dy
+        for step in range(0, dmin):
+            dest_square = squares[src_row-step-1][src_col-step-1]
+            if not dest_square.is_occupied():
+                legal_moves.append(dest_square)
+            else:
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+                break
+
+        return legal_moves
 
 
 class Bishop(Piece):
@@ -100,6 +296,71 @@ class Bishop(Piece):
         else:
             self.image = black_bishop
 
+    def get_legal_moves(self, row_count, col_count, squares, src_square):
+        """
+        Get a list of legal moves.
+        ::return list: list of squares
+        """
+        legal_moves = []
+
+        src_row = src_square.get_row()
+        src_col = src_square.get_col()
+
+        # Move diagonally down right
+        dx = col_count-1 - src_col
+        dy = row_count-1 - src_row
+        dmin = dx if dx <= dy else dy
+        for step in range(0, dmin):
+            print(step)
+            dest_square = squares[src_row+step+1][src_col+step+1]
+            if not dest_square.is_occupied():
+                legal_moves.append(dest_square)
+            else:
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+                break
+
+        # Move diagonally down left
+        dx = src_col
+        dy = row_count-1 - src_row
+        dmin = dx if dx <= dy else dy
+        for step in range(0, dmin):
+            dest_square = squares[src_row+step+1][src_col-step-1]
+            if not dest_square.is_occupied():
+                legal_moves.append(dest_square)
+            else:
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+                break
+
+        # Move diagonally up right
+        dx = col_count-1 - src_col
+        dy = src_row
+        dmin = dx if dx <= dy else dy
+        for step in range(0, dmin):
+            dest_square = squares[src_row-step-1][src_col+step+1]
+            if not dest_square.is_occupied():
+                legal_moves.append(dest_square)
+            else:
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+                break
+
+        # Move diagonally up left
+        dx = src_col
+        dy = src_row
+        dmin = dx if dx <= dy else dy
+        for step in range(0, dmin):
+            dest_square = squares[src_row-step-1][src_col-step-1]
+            if not dest_square.is_occupied():
+                legal_moves.append(dest_square)
+            else:
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+                break
+
+        return legal_moves
+
 
 class Knight(Piece):
 
@@ -112,6 +373,106 @@ class Knight(Piece):
             self.image = white_knight
         else:
             self.image = black_knight
+
+    def get_legal_moves(self, row_count, col_count, squares, src_square):
+        """
+        Get a list of legal moves.
+        ::return list: list of squares
+        """
+        legal_moves = []
+
+        src_row = src_square.get_row()
+        src_col = src_square.get_col()
+
+        # Move down 2 and right 1
+        if (0 <= src_row+2 <= row_count-1 and 0 <= src_col+1 <= col_count-1):
+            dest_square = squares[src_row+2][src_col+1]
+            # Occupied
+            if dest_square.is_occupied():
+                # Not the same color
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+            else:
+                legal_moves.append(dest_square)
+
+        # Move down 2 and left 1
+        if (0 <= src_row+2 <= row_count-1 and 0 <= src_col-1 <= col_count-1):
+            dest_square = squares[src_row+2][src_col-1]
+            # Occupied
+            if dest_square.is_occupied():
+                # Not the same color
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+            else:
+                legal_moves.append(dest_square)
+
+        # Move up 2 and right 1
+        if (0 <= src_row-2 <= row_count-1 and 0 <= src_col+1 <= col_count-1):
+            dest_square = squares[src_row-2][src_col+1]
+            # Occupied
+            if dest_square.is_occupied():
+                # Not the same color
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+            else:
+                legal_moves.append(dest_square)
+
+        # Move dup 2 and left 1
+        if (0 <= src_row-2 <= row_count-1 and 0 <= src_col-1 <= col_count-1):
+            dest_square = squares[src_row-2][src_col-1]
+            # Occupied
+            if dest_square.is_occupied():
+                # Not the same color
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+            else:
+                legal_moves.append(dest_square)
+
+        # Move down 1 and right 2
+        if (0 <= src_row+1 <= row_count-1 and 0 <= src_col+2 <= col_count-1):
+            dest_square = squares[src_row+1][src_col+2]
+            # Occupied
+            if dest_square.is_occupied():
+                # Not the same color
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+            else:
+                legal_moves.append(dest_square)
+
+        # Move up 1 and right 2
+        if (0 <= src_row-1 <= row_count-1 and 0 <= src_col+2 <= col_count-1):
+            dest_square = squares[src_row-1][src_col+2]
+            # Occupied
+            if dest_square.is_occupied():
+                # Not the same color
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+            else:
+                legal_moves.append(dest_square)
+
+        # Move down 1 and left 2
+        if (0 <= src_row+1 <= row_count-1 and 0 <= src_col-2 <= col_count-1):
+            dest_square = squares[src_row+1][src_col-2]
+            # Occupied
+            if dest_square.is_occupied():
+                # Not the same color
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+            else:
+                legal_moves.append(dest_square)
+
+        # Move up 1 and left 2
+        if (0 <= src_row-1 <= row_count-1 and 0 <= src_col-2 <= col_count-1):
+            dest_square = squares[src_row-1][src_col-2]
+            # Occupied
+            if dest_square.is_occupied():
+                # Not the same color
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+            else:
+                legal_moves.append(dest_square)
+
+        return legal_moves
 
 
 class Rook(Piece):
@@ -126,6 +487,58 @@ class Rook(Piece):
         else:
             self.image = black_rook
 
+    def get_legal_moves(self, row_count, col_count, squares, src_square):
+        """
+        Get a list of legal moves.
+        ::return list: list of squares
+        """
+        legal_moves = []
+
+        src_row = src_square.get_row()
+        src_col = src_square.get_col()
+
+        # Move horizontally right
+        for dx in range(1, col_count-src_col):
+            dest_square = squares[src_row][src_col+dx]
+            if not dest_square.is_occupied():
+                legal_moves.append(dest_square)
+            else:
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+                break
+
+        # Move horizontally left
+        for dx in range(1, src_col+1):
+            dest_square = squares[src_row][src_col-dx]
+            if not dest_square.is_occupied():
+                legal_moves.append(dest_square)
+            else:
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+                break
+
+        # Move vertically down
+        for dy in range(1, row_count-src_row):
+            dest_square = squares[src_row+dy][src_col]
+            if not dest_square.is_occupied():
+                legal_moves.append(dest_square)
+            else:
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+                break
+
+        # Move vertically up
+        for dy in range(1, src_row+1):
+            dest_square = squares[src_row-dy][src_col]
+            if not dest_square.is_occupied():
+                legal_moves.append(dest_square)
+            else:
+                if not self.color == dest_square.get_piece().get_color():
+                    legal_moves.append(dest_square)
+                break
+
+        return legal_moves
+
 
 class Pawn(Piece):
 
@@ -138,3 +551,87 @@ class Pawn(Piece):
             self.image = white_pawn
         else:
             self.image = black_pawn
+
+        self.first_move = True
+
+    def get_legal_moves(self, row_count, col_count, squares, src_square):
+        """
+        Get a list of legal moves.
+        ::return list: list of squares
+        """
+        legal_moves = []
+
+        src_row = src_square.get_row()
+        src_col = src_square.get_col()
+
+        # Color is white
+        if self.color == Color.WHITE:
+
+            # First move
+            if self.first_move:
+                dest_square = squares[src_row-2][src_col]
+                # Not occupied
+                if not (dest_square.is_occupied() or squares[src_row-1][src_col].is_occupied()):
+                    legal_moves.append(dest_square)
+
+            # Forwards
+            # Within bounds
+            if (0 <= src_row-1 <= row_count-1):
+                dest_square = squares[src_row-1][src_col]
+                # Not occupied
+                if not dest_square.is_occupied():
+                    legal_moves.append(dest_square)
+
+            # Diagonal
+            # Within bounds
+            if (0 <= src_row-1 <= row_count-1 and 0 <= src_col-1 <= col_count-1):
+                dest_square = squares[src_row-1][src_col-1]
+                # Occupied
+                if dest_square.is_occupied():
+                    # Not the same color
+                    if not self.color == dest_square.get_piece().get_color():
+                        legal_moves.append(dest_square)
+            if (0 <= src_row-1 <= row_count-1 and 0 <= src_col+1 <= col_count-1):
+                dest_square = squares[src_row-1][src_col+1]
+                # Occupied
+                if dest_square.is_occupied():
+                    # Not the same color
+                    if not self.color == dest_square.get_piece().get_color():
+                        legal_moves.append(dest_square)
+
+        # Color is black
+        else:
+
+            # First move
+            if self.first_move:
+                dest_square = squares[src_row+2][src_col]
+                # Not occupied
+                if not (dest_square.is_occupied() or squares[src_row+1][src_col].is_occupied()):
+                    legal_moves.append(dest_square)
+
+            # Forwards
+            # Within bounds
+            if (0 <= src_row+1 <= row_count-1):
+                dest_square = squares[src_row+1][src_col]
+                # Not occupied
+                if not dest_square.is_occupied():
+                    legal_moves.append(dest_square)
+
+            # Diagonal
+            # Within bounds
+            if (0 <= src_row+1 <= row_count-1 and 0 <= src_col-1 <= col_count-1):
+                dest_square = squares[src_row+1][src_col-1]
+                # Occupied
+                if dest_square.is_occupied():
+                    # Not the same color
+                    if not self.color == dest_square.get_piece().get_color():
+                        legal_moves.append(dest_square)
+            if (0 <= src_row+1 <= row_count-1 and 0 <= src_col+1 <= col_count-1):
+                dest_square = squares[src_row+1][src_col+1]
+                # Occupied
+                if dest_square.is_occupied():
+                    # Not the same color
+                    if not self.color == dest_square.get_piece().get_color():
+                        legal_moves.append(dest_square)
+
+        return legal_moves

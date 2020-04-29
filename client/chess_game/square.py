@@ -3,9 +3,25 @@ import pygame
 
 class Square:
 
-    def __init__(self):
+    def __init__(self, row, col):
+        self.row = row
+        self.col = col
         self.piece = None
         self.square_rect = None
+
+    def get_row(self):
+        """
+        Get the square's row.
+        ::return int: row
+        """
+        return self.row
+
+    def get_col(self):
+        """
+        Get the square's col.
+        ::return int: col
+        """
+        return self.col
 
     def get_piece(self):
         """

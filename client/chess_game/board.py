@@ -7,13 +7,13 @@ from client.chess_game.pieces import Color, King, Queen, Bishop, Knight, Rook, P
 class Board:
 
     def __init__(self):
-        self.rowCount = 8
-        self.colCount = 8
+        self.row_count = 8
+        self.col_count = 8
 
         self.board_rect = None
 
-        self.squares = [[Square() for _ in range(self.colCount)]
-                        for _ in range(self.rowCount)]
+        self.squares = [[Square(row, col) for col in range(self.col_count)]
+                        for row in range(self.row_count)]
 
     def get_square(self, x, y):
         """
@@ -21,8 +21,8 @@ class Board:
         ::param x: x position
         ::param y: y position
         """
-        for row in range(self.rowCount):
-            for col in range(self.colCount):
+        for row in range(self.row_count):
+            for col in range(self.col_count):
                 if self.squares[row][col].is_within_bounds(x, y):
                     return self.squares[row][col]
 
@@ -33,8 +33,8 @@ class Board:
         Reset the board.
         """
         # Remove pieces
-        for row in range(self.rowCount):
-            for col in range(self.colCount):
+        for row in range(self.row_count):
+            for col in range(self.col_count):
                 if self.squares[row][col].is_occupied():
                     self.squares[row][col].remove_piece()
 
@@ -87,11 +87,11 @@ class Board:
         Set the square rect relative to board rect.
         ::param board_rect: the board rect
         """
-        square_width = board_rect.width//self.rowCount
-        square_height = board_rect.height//self.colCount
+        square_width = board_rect.width//self.row_count
+        square_height = board_rect.height//self.col_count
 
-        for row in range(self.rowCount):
-            for col in range(self.colCount):
+        for row in range(self.row_count):
+            for col in range(self.col_count):
                 square_rect = pygame.Rect((board_rect.left+square_width*col,
                                            board_rect.top+square_width*row), (square_width, square_height))
                 self.squares[row][col].set_rect(square_rect)
@@ -105,20 +105,28 @@ class Board:
         """
         return (self.board_rect.left < x < self.board_rect.right and self.board_rect.top < y < self.board_rect.bottom)
 
-    def draw(self, surface):
+    def draw(self, surface, legal_moves):
         """
         Draw the board to the screen's surface.
         ::param surface: display surface to draw on
         """
         lightBrown = (217, 179, 140)
         darkBrown = (191, 128, 64)
+        green = (0, 255, 0)
 
         # Draw each square
-        for row in range(self.rowCount):
-            for col in range(self.colCount):
+        for row in range(self.row_count):
+            for col in range(self.col_count):
+
+                # Get the square
+                square = self.squares[row][col]
 
                 # Get the square's color
-                square_color = lightBrown if (row+col) % 2 == 0 else darkBrown
+                if square in legal_moves:
+                    square_color = green
+                else:
+                    square_color = lightBrown if (
+                        row+col) % 2 == 0 else darkBrown
 
                 # Draw the square
-                self.squares[row][col].draw(surface, square_color)
+                square.draw(surface, square_color)
