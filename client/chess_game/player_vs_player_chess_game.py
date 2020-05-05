@@ -6,7 +6,7 @@ from client.chess_game.player import Player
 from client.chess_game.pieces import Color, King, Pawn
 
 
-class ChessGame:
+class PlayerVsPlayerChessGame:
 
     def __init__(self):
         self.board = Board()

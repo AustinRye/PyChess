@@ -2,16 +2,16 @@ import pygame
 import pygame_gui
 
 from client.game_states.game_state import GameState
-from client.chess_game.chess_game import ChessGame
+from client.chess_game.player_vs_player_chess_game import PlayerVsPlayerChessGame
 from client.chess_game.pieces import Color
 
 
-class OfflineMultiplayerState(GameState):
+class PlayerVsPlayerChessGameState(GameState):
 
     def __init__(self):
         super().__init__()
 
-        self.chess_game = ChessGame()
+        self.chess_game = PlayerVsPlayerChessGame()
 
     def setupGraphics(self, surface):
         """

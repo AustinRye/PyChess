@@ -40,9 +40,9 @@ class MainMenuState(GameState):
         height = 50
         left = self.surface_rect.height/2 - width/2
         top = self.surface_rect.width/2 - height/2 + 160
-        self.offline_multiplayer_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((left, top), (width, height)),
-                                                                       text='Offline Multiplayer',
-                                                                       manager=self.gui_manager)
+        self.player_vs_player_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((left, top), (width, height)),
+                                                                    text='Player VS Player',
+                                                                    manager=self.gui_manager)
 
         # Initialize online multiplayer button
         width = 180
@@ -67,8 +67,8 @@ class MainMenuState(GameState):
                 if event.ui_element == self.singleplayer_button:
                     self.next_state_name = 'SingleplayerState'
                     self.done = True
-                if event.ui_element == self.offline_multiplayer_button:
-                    self.next_state_name = 'OfflineMultiplayerState'
+                if event.ui_element == self.player_vs_player_button:
+                    self.next_state_name = 'PlayerVsPlayerChessGameState'
                     self.done = True
                 if event.ui_element == self.online_multiplayer_button:
                     self.next_state_name = 'OnlineMultiplayerState'

@@ -3,7 +3,7 @@ import pygame
 from client.game_manager import GameManager
 from client.game_states.main_menu_state import MainMenuState
 from client.game_states.singleplayer_state import SingleplayerState
-from client.game_states.offline_multiplayer_state import OfflineMultiplayerState
+from client.game_states.player_vs_player_chess_game_state import PlayerVsPlayerChessGameState
 from client.game_states.online_multiplayer_state import OnlineMultiplayerState
 
 # Create display surface
@@ -13,7 +13,7 @@ surface = pygame.display.set_mode(surface_size)
 
 # Create game states
 states = {'MainMenuState': MainMenuState(), 'SingleplayerState': SingleplayerState(),
-          'OfflineMultiplayerState': OfflineMultiplayerState(), 'OnlineMultiplayerState': OnlineMultiplayerState()}
+          'PlayerVsPlayerChessGameState': PlayerVsPlayerChessGameState(), 'OnlineMultiplayerState': OnlineMultiplayerState()}
 start_state_name = 'MainMenuState'
 
 # Create the game
